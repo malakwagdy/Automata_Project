@@ -88,21 +88,22 @@ public class PDAPageController {
         String prefix = fullInput.substring(0, consumedCount);
         pda.setInput(prefix);
         boolean prefixAccepted = pda.isAccepted();
+        String message = pda.getMessage();
+        boolean finished = consumedCount == fullInput.length();
 
         inputLabel.setText("Input: " + formatRemainingInput(fullInput, consumedCount));
         stackLabel.setText(formatStackVertical(pda.stack));
 
-        if (!isValidPrefix(prefix)) {
+        if (!finished && shouldStopEarly(message)) {
             PDALabel.setText(hasConsumedB(prefix) ? "q" : "p");
             statusLabel.setStyle("-fx-text-fill: red;");
-            statusLabel.setText(pda.getMessage());
+            statusLabel.setText(message);
             if (simulationTimeline != null) {
                 simulationTimeline.stop();
             }
             return;
         }
 
-        boolean finished = consumedCount == fullInput.length();
         if (!finished) {
             PDALabel.setText(hasConsumedB(prefix) ? "q" : "p");
             statusLabel.setStyle("-fx-text-fill: black;");
@@ -113,11 +114,11 @@ public class PDAPageController {
         if (prefixAccepted) {
             PDALabel.setText("f");
             statusLabel.setStyle("-fx-text-fill: green;");
-            statusLabel.setText(pda.getMessage());
+            statusLabel.setText(message);
         } else {
             PDALabel.setText(hasConsumedB(prefix) ? "q" : "p");
             statusLabel.setStyle("-fx-text-fill: red;");
-            statusLabel.setText(pda.getMessage());
+            statusLabel.setText(message);
         }
     }
 
@@ -125,38 +126,8 @@ public class PDAPageController {
         return s.indexOf('b') >= 0;
     }
 
-    private boolean isValidPrefix(String s) {
-        int balance = 0;
-        boolean seenB = false;
-
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c == 'a') {
-                if (seenB) {
-                    return false;
-                }
-                balance++;
-            } else if (c == 'b') {
-                seenB = true;
-                balance--;
-                if (balance < 0) {
-                    return false;
-                }
-            } else {
-                return false;
-            }
-        }
-        return true;
-    }
-
-    private boolean hasInvalidAlphabet(String s) {
-        for (int i = 0; i < s.length(); i++) {
-            char c = s.charAt(i);
-            if (c != 'a' && c != 'b') {
-                return true;
-            }
-        }
-        return false;
+    private boolean shouldStopEarly(String message) {
+        return !("String Rejected: more a's than b's".equals(message) || "String Accepted!".equals(message));
     }
 
     private String formatStackVertical(Stack<Character> stack) {

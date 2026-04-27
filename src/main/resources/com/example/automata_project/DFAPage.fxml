@@ -12,7 +12,7 @@
 <?import javafx.scene.shape.Polygon?>
 <?import javafx.scene.text.Font?>
 
-<VBox fx:id="inputField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="701.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.automata_project.DFAPageController">
+<VBox fx:id="inputField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="423.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.automata_project.DFAPageController">
    <children>
       <TextField fx:id="inputTextField" alignment="CENTER" onAction="#onCheckInput" promptText="Enter a string of 0's and 1's then press Enter">
          <VBox.margin>
@@ -22,127 +22,89 @@
       <Label fx:id="inputLabel" />
       <Pane prefHeight="268.0" prefWidth="701.0">
          <children>
-            <Group fx:id="q0" layoutX="71.0" layoutY="98.0">
+            <Group fx:id="q0" layoutX="83.0" layoutY="104.0">
                <children>
-                  <Circle fx:id="ZERO_ONES_ENDS_WITH_ONE" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="START" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
                   <Label layoutX="-9.0" layoutY="-8.0" text="Q0" />
                </children>
             </Group>
-            <Group fx:id="q1" layoutX="64.0" layoutY="214.0">
+            <Group fx:id="q1" layoutX="135.0" layoutY="218.0">
                <children>
-                  <Circle fx:id="ZERO_ONES_ENDS_WITH_ZERO" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Label layoutX="-9.0" layoutY="-8.0" text="Q1" />
+                  <Circle fx:id="ZERO_ONES" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label layoutX="-9.0" layoutY="-8.0" text="Q3" />
                   <Circle fill="#ffffff00" radius="29.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </Group>
-            <Group fx:id="q2" layoutX="198.0" layoutY="98.0">
+            <Group fx:id="q2" layoutX="210.0" layoutY="104.0">
                <children>
-                  <Circle fx:id="ONE_ONE_ENDS_WITH_ONE" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Circle fx:id="ONE_ONE" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label layoutX="-9.0" layoutY="-8.0" text="Q1" />
+               </children>
+            </Group>
+            <Group fx:id="q3" layoutX="337.0" layoutY="104.0">
+               <children>
+                  <Circle fx:id="TWO_ONES" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
                   <Label layoutX="-9.0" layoutY="-8.0" text="Q2" />
                </children>
             </Group>
-            <Group fx:id="q3" layoutX="325.0" layoutY="98.0">
-               <children>
-                  <Circle fx:id="ONE_ONE_ENDS_WITH_ZERO" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Label layoutX="-9.0" layoutY="-8.0" text="Q3" />
-               </children>
-            </Group>
-            <Group fx:id="q4" layoutX="461.0" layoutY="98.0">
-               <children>
-                  <Circle fx:id="TWO_ONES_ENDS_WITH_ONE" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Label layoutX="-9.0" layoutY="-8.0" text="Q4" />
-               </children>
-            </Group>
-            <Group fx:id="q5" layoutX="592.0" layoutY="98.0">
-               <children>
-                  <Circle fx:id="TWO_ONES_ENDS_WITH_ZERO" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Label layoutX="-9.0" layoutY="-8.0" text="Q5" />
-               </children>
-            </Group>
-            <CubicCurve controlX1="-51.12437438964844" controlX2="-10.763320922851562" controlY1="-122.41812133789062" controlY2="-86.21762084960938" endX="-10.763320922851562" endY="-86.21762084960938" fill="#fafafa00" layoutX="192.0" layoutY="163.0" startX="-106.68698120117188" startY="-86.21762084960938" stroke="BLACK" />
-            <CubicCurve controlX1="-51.12437438964844" controlX2="-10.763320922851562" controlY1="-122.41812133789062" controlY2="-86.21762084960938" endX="-10.763320922851562" endY="-86.21762084960938" fill="#fafafa00" layoutX="320.0" layoutY="163.0" startX="-106.68698120117188" startY="-86.21762084960938" stroke="BLACK" />
-            <CubicCurve controlX1="-51.12437438964844" controlX2="-1.79998779296875" controlY1="-122.41812133789062" controlY2="-86.21762084960938" endX="-1.79998779296875" endY="-86.21762084960938" fill="#fafafa00" layoutX="448.0" layoutY="163.0" startX="-108.09463500976562" startY="-86.21762084960938" stroke="BLACK" />
-            <Polygon fill="BLACK" layoutX="415.0" layoutY="59.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
-            <Polygon fill="BLACK" layoutX="279.0" layoutY="59.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
-            <Polygon fill="BLACK" layoutX="151.0" layoutY="60.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
-            <CubicCurve controlX1="-51.12437438964844" controlX2="-1.79998779296875" controlY1="-122.41812133789062" controlY2="-86.21762084960938" endX="-1.79998779296875" endY="-86.21762084960938" fill="#fafafa00" layoutX="581.0" layoutY="161.0" startX="-108.09463500976562" startY="-86.21762084960938" stroke="BLACK" />
-            <Polygon fill="BLACK" layoutX="548.0" layoutY="57.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
-            <CubicCurve controlX1="-82.7705078125" controlX2="-64.0" controlY1="-75.43292236328125" controlY2="-42.0" endX="-64.0" endY="-41.99998474121094" fill="#fafafa00" layoutX="128.0" layoutY="227.0" startX="-62.913665771484375" startY="-103.0" stroke="BLACK" />
-            <Polygon fill="BLACK" layoutX="34.0" layoutY="163.0" points="31.740501403808594, 17.185958862304688, 30.05408477783203, 23.000015258789062, 25.235809326171875, 18.703720092773438" />
-            <CubicCurve controlX1="-35.40211486816406" controlX2="-15.701416015625" controlY1="-102.76638793945312" controlY2="-163.6250457763672" endX="-15.701416015625" endY="-163.6250457763672" fill="#fafafa00" layoutX="191.0" layoutY="280.0" startX="-106.68698120117188" startY="-86.21762084960938" stroke="BLACK" />
-            <Polygon fill="BLACK" layoutX="142.0" layoutY="100.0" points="35.59716796875, 12.949203491210938, 30.0, 15.874954223632812, 35.59716796875, 18.600006103515625" />
-            <CubicCurve controlX1="-194.3625946044922" controlX2="-77.887939453125" controlY1="-159.77554321289062" controlY2="-76.46832275390625" endX="40.798583984375" endY="-155.22540283203125" fill="#fafafa00" layoutX="407.0" layoutY="279.0" startX="-194.3625946044922" startY="-159.77554321289062" stroke="BLACK" />
-            <Polygon fill="BLACK" layoutX="414.0" layoutY="107.0" points="35.59716796875, 12.949203491210938, 30.0, 15.874954223632812, 35.59716796875, 18.600006103515625" />
-            <Polygon fill="BLACK" layoutX="79.0" layoutY="214.0" points="16.480606079101562, 14.435150146484375, 11.734123229980469, 17.825469970703125, 9.849983215332031, 12.94921875" />
-            <Polygon fill="BLACK" layoutX="28.0" layoutY="46.0" points="33.132755279541016, 27.268020629882812, 26.601314544677734, 26.0, 28.194259643554688, 30.73785400390625" />
-            <Polygon fill="BLACK" layoutX="40.0" layoutY="43.0" points="38.900001525878906, 29.0, 34.94453430175781, 24.199996948242188, 33.00001525878906, 29.399993896484375" />
-            <CubicCurve controlX1="-35.266510009765625" controlX2="129.63375854492188" controlY1="-195.96707153320312" controlY2="-100.07389831542969" endX="127.79998779296875" endY="-101.0" fill="#fafafa00" layoutX="330.0" layoutY="173.0" startX="-253.89999389648438" startY="-103.30000305175781" stroke="BLACK" />
-            <CubicCurve controlX1="-41.732269287109375" controlX2="258.79998779296875" controlY1="-265.2922058105469" controlY2="-109.19999694824219" endX="258.79998779296875" endY="-109.19999694824219" fill="#fafafa00" layoutX="340.0" layoutY="183.0" startX="-282.9158935546875" startY="-109.19999694824219" stroke="BLACK" />
-            <CubicCurve controlX1="-80.78414154052734" controlX2="-48.353271484375" controlY1="-30.178253173828125" controlY2="-103.94259643554688" endX="-111.94322204589844" endY="-90.58871459960938" fill="#fafafa00" layoutX="201.0" layoutY="290.0" startX="-111.94322204589844" startY="-63.245025634765625" stroke="BLACK" />
-            <Polygon fill="BLACK" layoutX="605.0" layoutY="94.0" points="16.480606079101562, 14.435150146484375, 11.734123229980469, 17.825469970703125, 9.849983215332031, 12.94921875" />
-            <CubicCurve controlX1="-80.78414154052734" controlX2="-48.353271484375" controlY1="-30.178253173828125" controlY2="-103.94259643554688" endX="-115.613525390625" endY="-89.40144348144531" fill="#fafafa00" layoutX="728.0" layoutY="171.0" startX="-111.94322204589844" startY="-63.245025634765625" stroke="BLACK" />
-            <Label layoutX="128.0" layoutY="213.0" text="0">
+            <CubicCurve controlX1="-51.12437438964844" controlX2="-10.763320922851562" controlY1="-122.41812133789062" controlY2="-86.21762084960938" endX="-10.763320922851562" endY="-86.21762084960938" fill="#fafafa00" layoutX="204.0" layoutY="169.0" startX="-106.68698120117188" startY="-86.21762084960938" stroke="BLACK" />
+            <CubicCurve controlX1="-51.12437438964844" controlX2="-10.763320922851562" controlY1="-122.41812133789062" controlY2="-86.21762084960938" endX="-10.763320922851562" endY="-86.21762084960938" fill="#fafafa00" layoutX="332.0" layoutY="169.0" startX="-106.68698120117188" startY="-86.21762084960938" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="291.0" layoutY="65.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
+            <Polygon fill="BLACK" layoutX="163.0" layoutY="66.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
+            <CubicCurve controlX1="-105.59815216064453" controlX2="-67.0235595703125" controlY1="-66.51203918457031" controlY2="-43.608001708984375" endX="-67.0235595703125" endY="-43.608001708984375" fill="#fafafa00" layoutX="199.0" layoutY="231.0" startX="-107.5" startY="-102.80000305175781" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="106.0" layoutY="168.0" points="26.965072631835938, 16.483154296875, 28.300003051757812, 21.0, 22.899993896484375, 19.891998291015625" />
+            <CubicCurve controlX1="-55.38667297363281" controlX2="-48.68951416015625" controlY1="-101.80630493164062" controlY2="-154.7747039794922" endX="-48.68951416015625" endY="-154.7747039794922" fill="#fafafa00" layoutX="262.0" layoutY="284.0" startX="-106.68698120117188" startY="-86.21762084960938" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="178.0" layoutY="114.0" points="35.49798583984375, 15.0, 31.869155883789062, 19.338455200195312, 37.28938293457031, 19.338455200195312" />
+            <CubicCurve controlX1="-192.0" controlX2="-73.70159912109375" controlY1="-151.0" controlY2="-272.3741760253906" endX="62.0" endY="-151.0" fill="#fafafa00" layoutX="275.0" layoutY="229.0" startX="-192.0" startY="-151.0" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="48.0" layoutY="52.0" points="38.900001525878906, 26.0, 34.0, 21.600006103515625, 34.0, 26.0" />
+            <Polygon fill="BLACK" layoutX="150.0" layoutY="218.0" points="16.480606079101562, 14.435150146484375, 11.734123229980469, 17.825469970703125, 9.849983215332031, 12.94921875" />
+            <CubicCurve controlX1="-80.78414154052734" controlX2="-48.353271484375" controlY1="-30.178253173828125" controlY2="-103.94259643554688" endX="-111.94322204589844" endY="-90.58871459960938" fill="#fafafa00" layoutX="272.0" layoutY="294.0" startX="-111.94322204589844" startY="-63.245025634765625" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="223.0" layoutY="101.0" points="16.480606079101562, 14.435150146484375, 11.734123229980469, 17.825469970703125, 9.849983215332031, 12.94921875" />
+            <CubicCurve controlX1="-80.78414154052734" controlX2="-48.353271484375" controlY1="-30.178253173828125" controlY2="-103.94259643554688" endX="-115.613525390625" endY="-89.40144348144531" fill="#fafafa00" layoutX="347.0" layoutY="179.0" startX="-111.94322204589844" startY="-63.245025634765625" stroke="BLACK" />
+            <Label layoutX="199.0" layoutY="217.0" text="0">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="45.0" layoutY="143.0" text="0">
+            <Label layoutX="89.0" layoutY="159.0" text="0">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="257.0" layoutY="46.0" text="0">
+            <Label layoutX="269.0" layoutY="52.0" text="1">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="656.0" layoutY="91.0" text="0">
+            <Label layoutX="274.0" layoutY="99.0" text="0">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label layoutX="522.0" layoutY="62.0" text="0">
+            <Polygon fill="BLACK" layoutX="345.0" layoutY="110.0" points="16.480606079101562, 14.435150146484375, 11.734123229980469, 17.825469970703125, 9.849983215332031, 12.94921875" />
+            <CubicCurve controlX1="-80.78414154052734" controlX2="-48.353271484375" controlY1="-30.178253173828125" controlY2="-103.94259643554688" endX="-107.29861450195312" endY="-92.552490234375" fill="#fafafa00" layoutX="468.0" layoutY="187.0" startX="-111.94322204589844" startY="-63.245025634765625" stroke="BLACK" />
+            <Label layoutX="396.0" layoutY="107.0" text="0">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Polygon fill="BLACK" layoutX="333.0" layoutY="104.0" points="16.480606079101562, 14.435150146484375, 11.734123229980469, 17.825469970703125, 9.849983215332031, 12.94921875" />
-            <CubicCurve controlX1="-80.78414154052734" controlX2="-48.353271484375" controlY1="-30.178253173828125" controlY2="-103.94259643554688" endX="-107.29861450195312" endY="-92.552490234375" fill="#fafafa00" layoutX="456.0" layoutY="181.0" startX="-111.94322204589844" startY="-63.245025634765625" stroke="BLACK" />
-            <Label layoutX="384.0" layoutY="101.0" text="0">
+            <Label alignment="CENTER" layoutX="142.0" layoutY="53.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="130.0" layoutY="62.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="206.0" layoutY="11.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="386.0" layoutY="61.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
+            <Label alignment="CENTER" layoutX="202.0" layoutY="166.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
                <font>
                   <Font size="10.0" />
                </font>
             </Label>
-            <Label alignment="CENTER" layoutX="335.0" layoutY="162.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="304.0" layoutY="18.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="385.0" layoutY="-5.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
-            <Label alignment="CENTER" layoutX="147.0" layoutY="162.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
-               <font>
-                  <Font size="10.0" />
-               </font>
-            </Label>
+            <CubicCurve controlX1="-32.099998474121094" controlX2="-10.763320922851562" controlY1="-106.0" controlY2="-86.21762084960938" endX="-10.763320922851562" endY="-86.21762084960938" fill="#fafafa00" layoutX="75.0" layoutY="170.0" startX="-54.88482666015625" startY="-99.39999389648438" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="34.0" layoutY="67.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
          </children>
       </Pane>
       <Label fx:id="statusLabel">

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Group?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.CubicCurve?>
+<?import javafx.scene.shape.Polygon?>
+<?import javafx.scene.text.Font?>
+
+<VBox fx:id="inputField" alignment="CENTER" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="460.0" prefWidth="423.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.automata_project.DFAPageController">
+   <children>
+      <TextField fx:id="inputTextField" alignment="CENTER" onAction="#onCheckInput" promptText="Enter a string of 0's and 1's then press Enter">
+         <VBox.margin>
+            <Insets left="20.0" right="20.0" />
+         </VBox.margin>
+      </TextField>
+      <Label fx:id="inputLabel" />
+      <Pane prefHeight="268.0" prefWidth="701.0">
+         <children>
+            <Group fx:id="q0" layoutX="83.0" layoutY="104.0">
+               <children>
+                  <Circle fx:id="START" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label layoutX="-9.0" layoutY="-8.0" text="Q0" />
+               </children>
+            </Group>
+            <Group fx:id="q1" layoutX="135.0" layoutY="218.0">
+               <children>
+                  <Circle fx:id="ZERO_ONES" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label layoutX="-9.0" layoutY="-8.0" text="Q3" />
+                  <Circle fill="#ffffff00" radius="29.0" stroke="BLACK" strokeType="INSIDE" />
+               </children>
+            </Group>
+            <Group fx:id="q2" layoutX="210.0" layoutY="104.0">
+               <children>
+                  <Circle fx:id="ONE_ONE" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label layoutX="-9.0" layoutY="-8.0" text="Q1" />
+               </children>
+            </Group>
+            <Group fx:id="q3" layoutX="337.0" layoutY="104.0">
+               <children>
+                  <Circle fx:id="TWO_ONES" fill="LIGHTGRAY" radius="26.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label layoutX="-9.0" layoutY="-8.0" text="Q2" />
+               </children>
+            </Group>
+            <CubicCurve controlX1="-51.12437438964844" controlX2="-10.763320922851562" controlY1="-122.41812133789062" controlY2="-86.21762084960938" endX="-10.763320922851562" endY="-86.21762084960938" fill="#fafafa00" layoutX="204.0" layoutY="169.0" startX="-106.68698120117188" startY="-86.21762084960938" stroke="BLACK" />
+            <CubicCurve controlX1="-51.12437438964844" controlX2="-10.763320922851562" controlY1="-122.41812133789062" controlY2="-86.21762084960938" endX="-10.763320922851562" endY="-86.21762084960938" fill="#fafafa00" layoutX="332.0" layoutY="169.0" startX="-106.68698120117188" startY="-86.21762084960938" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="291.0" layoutY="65.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
+            <Polygon fill="BLACK" layoutX="163.0" layoutY="66.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
+            <CubicCurve controlX1="-105.59815216064453" controlX2="-67.0235595703125" controlY1="-66.51203918457031" controlY2="-43.608001708984375" endX="-67.0235595703125" endY="-43.608001708984375" fill="#fafafa00" layoutX="199.0" layoutY="231.0" startX="-107.5" startY="-102.80000305175781" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="106.0" layoutY="168.0" points="26.965072631835938, 16.483154296875, 28.300003051757812, 21.0, 22.899993896484375, 19.891998291015625" />
+            <CubicCurve controlX1="-55.38667297363281" controlX2="-48.68951416015625" controlY1="-101.80630493164062" controlY2="-154.7747039794922" endX="-48.68951416015625" endY="-154.7747039794922" fill="#fafafa00" layoutX="262.0" layoutY="284.0" startX="-106.68698120117188" startY="-86.21762084960938" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="178.0" layoutY="114.0" points="35.49798583984375, 15.0, 31.869155883789062, 19.338455200195312, 37.28938293457031, 19.338455200195312" />
+            <CubicCurve controlX1="-192.0" controlX2="-73.70159912109375" controlY1="-151.0" controlY2="-272.3741760253906" endX="62.0" endY="-151.0" fill="#fafafa00" layoutX="275.0" layoutY="229.0" startX="-192.0" startY="-151.0" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="48.0" layoutY="52.0" points="38.900001525878906, 26.0, 34.0, 21.600006103515625, 34.0, 26.0" />
+            <Polygon fill="BLACK" layoutX="150.0" layoutY="218.0" points="16.480606079101562, 14.435150146484375, 11.734123229980469, 17.825469970703125, 9.849983215332031, 12.94921875" />
+            <CubicCurve controlX1="-80.78414154052734" controlX2="-48.353271484375" controlY1="-30.178253173828125" controlY2="-103.94259643554688" endX="-111.94322204589844" endY="-90.58871459960938" fill="#fafafa00" layoutX="272.0" layoutY="294.0" startX="-111.94322204589844" startY="-63.245025634765625" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="223.0" layoutY="101.0" points="16.480606079101562, 14.435150146484375, 11.734123229980469, 17.825469970703125, 9.849983215332031, 12.94921875" />
+            <CubicCurve controlX1="-80.78414154052734" controlX2="-48.353271484375" controlY1="-30.178253173828125" controlY2="-103.94259643554688" endX="-115.613525390625" endY="-89.40144348144531" fill="#fafafa00" layoutX="347.0" layoutY="179.0" startX="-111.94322204589844" startY="-63.245025634765625" stroke="BLACK" />
+            <Label layoutX="199.0" layoutY="217.0" text="0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="89.0" layoutY="159.0" text="0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="269.0" layoutY="52.0" text="1">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label layoutX="274.0" layoutY="99.0" text="0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Polygon fill="BLACK" layoutX="345.0" layoutY="110.0" points="16.480606079101562, 14.435150146484375, 11.734123229980469, 17.825469970703125, 9.849983215332031, 12.94921875" />
+            <CubicCurve controlX1="-80.78414154052734" controlX2="-48.353271484375" controlY1="-30.178253173828125" controlY2="-103.94259643554688" endX="-107.29861450195312" endY="-92.552490234375" fill="#fafafa00" layoutX="468.0" layoutY="187.0" startX="-111.94322204589844" startY="-63.245025634765625" stroke="BLACK" />
+            <Label layoutX="396.0" layoutY="107.0" text="0">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="142.0" layoutY="53.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="206.0" layoutY="11.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <Label alignment="CENTER" layoutX="202.0" layoutY="166.0" prefHeight="9.0" prefWidth="9.0" text="1" textAlignment="CENTER">
+               <font>
+                  <Font size="10.0" />
+               </font>
+            </Label>
+            <CubicCurve controlX1="-32.099998474121094" controlX2="-10.763320922851562" controlY1="-106.0" controlY2="-86.21762084960938" endX="-10.763320922851562" endY="-86.21762084960938" fill="#fafafa00" layoutX="75.0" layoutY="170.0" startX="-54.88482666015625" startY="-99.39999389648438" stroke="BLACK" />
+            <Polygon fill="BLACK" layoutX="34.0" layoutY="67.0" points="31.899993896484375, 18.600006103515625, 29.899993896484375, 13.800003051757812, 26.29998779296875, 17.199996948242188" />
+         </children>
+      </Pane>
+      <Label fx:id="statusLabel">
+         <VBox.margin>
+            <Insets bottom="10.0" top="10.0" />
+         </VBox.margin>
+      </Label>
+      <Button mnemonicParsing="false" onAction="#onBackClick" text="Back" />
+   </children>
+</VBox>

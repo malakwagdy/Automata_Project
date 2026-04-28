@@ -196,7 +196,7 @@ public class CFGtoPDAPipeline {
         if (accepted) {
             simulationMessage = "String Accepted !";
         } else {
-            simulationMessage = "String Rejected!";
+            simulationMessage = "String Rejected !";
         }
 
         return accepted;

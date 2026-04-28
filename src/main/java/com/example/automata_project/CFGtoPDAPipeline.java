@@ -4,15 +4,32 @@ import java.util.*;
 
 public class CFGtoPDAPipeline {
 
-    // --- 1. DATA STRUCTURES ---
+    // EXPOSED VARIABLES FOR GUI
+    // Req 3 & 4: These public static variables allow the GUI to grab the simulation status and stack anytime.
+    public static String simulationMessage = "";
+    public static Stack<String> currentSimulationStack = new Stack<>();
+
+    //DATA STRUCTURE FOR GUI FUNCTION
+    //A wrapper object to return everything the main function generated back to the GUI
+    public static class PipelineResult {
+        public List<Rule> grammar;
+        public Set<String> terminals;
+        public List<Transition> pda;
+        public String message;
+    }
+
+    // 1. DATA STRUCTURES
     static class Rule {
         String lhs;
         String rhs;
         Rule(String lhs, String rhs) {
             this.lhs = lhs;
-            // We strip spaces here so the left-recursion detection math
-            // doesn't accidentally fail if the user types "E -> E + T" instead of "E->E+T"
-            this.rhs = rhs.replaceAll("\\s+", "");
+            // Support Greek epsilon.
+            // We replace both lowercase and uppercase unicode epsilons with "e"
+            // so the internal logic handles it seamlessly without crashing.
+            this.rhs = rhs.replaceAll("\\s+", "")
+                    .replace("\u03B5", "e")
+                    .replace("\u03b5", "e");
         }
     }
 
@@ -27,13 +44,68 @@ public class CFGtoPDAPipeline {
         }
     }
 
-    // --- 2. PRE-PROCESSOR: Eliminates Direct Left Recursion ---
+    // GUI ACCESSIBLE MAIN FUNCTION EQUIVALENT
+    // This function mirrors exactly what the console `main` loop does,
+    // but takes a raw multi-line string and returns an accessible object.
+    public static PipelineResult processGrammar(String rawInput) {
+        PipelineResult result = new PipelineResult();
+        List<Rule> grammar = new ArrayList<>();
+        Set<String> terminals = new HashSet<>();
+
+        String[] lines = rawInput.split("\\R");
+        for (String line : lines) {
+            line = line.trim();
+
+            if (line.isEmpty() || line.equalsIgnoreCase("DONE")) continue;
+
+            if (line.contains("$")) {
+                result.message = "Error: The '$' symbol is reserved for the internal PDA stack marker. Please do not use it.";
+                return result;
+            }
+
+            String[] parts = line.split("->");
+            if (parts.length != 2) continue;
+
+            String lhs = parts[0].trim();
+            String[] derivations = parts[1].split("\\|");
+
+            for (String derivation : derivations) {
+                String rhs = derivation.trim();
+                Rule newRule = new Rule(lhs, rhs);
+                grammar.add(newRule);
+
+                // Check against "e" because the Rule constructor automatically normalized ε to e
+                if (!newRule.rhs.equals("e")) {
+                    for (char c : newRule.rhs.toCharArray()) {
+                        if (!Character.isUpperCase(c) && !Character.isWhitespace(c)) {
+                            terminals.add(String.valueOf(c));
+                        }
+                    }
+                }
+            }
+        }
+
+        if (grammar.isEmpty()) {
+            result.message = "No valid grammar entered.";
+            return result;
+        }
+
+        // Apply logic
+        grammar = eliminateLeftRecursion(grammar);
+        result.grammar = grammar;
+        result.terminals = terminals;
+        result.pda = convertToPDA(grammar, terminals);
+        result.message = "PDA successfully generated with " + result.pda.size() + " transitions.";
+
+        return result;
+    }
+
+    // 2. PRE-PROCESSOR: Eliminates Direct Left Recursion
     public static List<Rule> eliminateLeftRecursion(List<Rule> rules) {
         List<Rule> newRules = new ArrayList<>();
-        Map<String, List<String>> grammarMap = new LinkedHashMap<>(); // Preserves insertion order
+        Map<String, List<String>> grammarMap = new LinkedHashMap<>();
         Set<String> usedVariables = new HashSet<>();
 
-        // Group derivations by their left-hand side and map all used variables
         for (Rule r : rules) {
             grammarMap.computeIfAbsent(r.lhs, k -> new ArrayList<>()).add(r.rhs);
             usedVariables.add(r.lhs);
@@ -42,11 +114,10 @@ public class CFGtoPDAPipeline {
             }
         }
 
-        // Process each variable
         for (String lhs : grammarMap.keySet()) {
             List<String> derivations = grammarMap.get(lhs);
-            List<String> alphas = new ArrayList<>(); // Left-recursive parts (e.g., "+T")
-            List<String> betas = new ArrayList<>();  // Non-recursive parts (e.g., "T")
+            List<String> alphas = new ArrayList<>();
+            List<String> betas = new ArrayList<>();
 
             for (String rhs : derivations) {
                 if (rhs.startsWith(lhs)) alphas.add(rhs.substring(lhs.length()));
@@ -54,21 +125,17 @@ public class CFGtoPDAPipeline {
             }
 
             if (alphas.isEmpty()) {
-                // No left recursion, keep it exactly as it is
                 for (String rhs : derivations) newRules.add(new Rule(lhs, rhs));
             } else {
-                // Left recursion detected! Grab a fresh, unused variable.
                 String prime = getUnusedVariable(usedVariables);
                 usedVariables.add(prime);
                 System.out.println("  [Auto-Fix] Rewrote left-recursive rule for '" + lhs + "'. Using '" + prime + "' as the new helper variable.");
 
-                if (betas.isEmpty()) betas.add("e"); // Failsafe if grammar is malformed
+                if (betas.isEmpty()) betas.add("e");
 
-                // Rule 1: A -> beta A'
                 for (String beta : betas) {
                     newRules.add(new Rule(lhs, beta.equals("e") ? prime : beta + prime));
                 }
-                // Rule 2: A' -> alpha A' | e
                 for (String alpha : alphas) {
                     newRules.add(new Rule(prime, alpha + prime));
                 }
@@ -78,58 +145,74 @@ public class CFGtoPDAPipeline {
         return newRules;
     }
 
-    // Helper method to find an unused uppercase letter (starts at Z and works backward)
     private static String getUnusedVariable(Set<String> used) {
         for (char c = 'Z'; c >= 'A'; c--) {
             if (!used.contains(String.valueOf(c))) return String.valueOf(c);
         }
-        return "X"; // Fallback
+        return "X";
     }
 
-    // --- 3. THE CONVERTER (CFG -> PDA) ---
+    // 3. THE CONVERTER (CFG -> PDA)
     public static List<Transition> convertToPDA(List<Rule> rules, Set<String> terminals) {
         List<Transition> pda = new ArrayList<>();
         if (rules.isEmpty()) return pda;
 
         String startSymbol = rules.get(0).lhs;
 
-        // Step A: Initialization (Push Start Symbol and '$' marker)
         pda.add(new Transition("q_start", "e", "e", "q_loop", startSymbol + "$"));
 
-        // Step B: Rule Substitution
         for (Rule r : rules) {
             pda.add(new Transition("q_loop", "e", r.lhs, "q_loop", r.rhs));
         }
 
-        // Step C: Terminal Matching
         for (String t : terminals) {
             pda.add(new Transition("q_loop", t, t, "q_loop", "e"));
         }
 
-        // Step D: Acceptance
         pda.add(new Transition("q_loop", "e", "$", "q_accept", "e"));
 
         return pda;
     }
 
-    // --- 4. THE SIMULATOR (Test String -> Accept/Reject) ---
+    // 4. THE SIMULATOR (Test String -> Accept/Reject)
     public static boolean testString(List<Transition> pda, String inputString) {
         Stack<String> initialStack = new Stack<>();
-        // Stripping spaces from the input string so it matches the stripped rules
-        return explorePath("q_start", inputString.replaceAll("\\s+", ""), initialStack, pda, 0);
+
+        // Reset GUI variables at the start of a new test
+        currentSimulationStack.clear();
+        simulationMessage = "Running...";
+
+        // Strip spaces and also normalize Greek epsilon if the user inputs it in the test string
+        String cleanInput = inputString.replaceAll("\\s+", "")
+                .replace("\u03B5", "e")
+                .replace("\u03b5", "e");
+
+        // If the user literally just passed an epsilon string, it means empty string
+        if (cleanInput.equals("e")) cleanInput = "";
+
+        boolean accepted = explorePath("q_start", cleanInput, initialStack, pda, 0);
+
+        // Populate the GUI accessible message variable
+        if (accepted) {
+            simulationMessage = "String Accepted !";
+        } else {
+            simulationMessage = "String Rejected!";
+        }
+
+        return accepted;
     }
 
     private static boolean explorePath(String state, String remainingInput, Stack<String> stack, List<Transition> pda, int depth) {
-        // --- THE INFINITE LOOP SAFEGUARD ---
-        // Prevents StackOverflowError if the parser gets stuck in a cycle (e.g., A -> B, B -> A)
+        // Expose the stack contents so GUI can read them.
+        // This takes a snapshot of the current path's stack.
+        currentSimulationStack = (Stack<String>) stack.clone();
+
         if (depth > 1000) return false;
 
-        // Base case: If we reach accept state and input is empty
         if (state.equals("q_accept")) {
             return remainingInput.isEmpty();
         }
 
-        // Try every possible transition
         for (Transition t : pda) {
             if (!t.currentState.equals(state)) continue;
 
@@ -151,80 +234,45 @@ public class CFGtoPDAPipeline {
 
             String nextInput = isEpsilonInput ? remainingInput : remainingInput.substring(1);
 
-            // Recursive call passing depth + 1
             if (explorePath(t.nextState, nextInput, nextStack, pda, depth + 1)) {
+                // Keep the winning stack state intact for the GUI to display
+                currentSimulationStack = nextStack;
                 return true;
             }
         }
         return false;
     }
 
-    // --- 5. MAIN EXECUTION PIPELINE ---
+    // 5. MAIN EXECUTION PIPELINE (Console Test)
     public static void main(String[] args) {
         Scanner scanner = new Scanner(System.in);
-        List<Rule> grammar = new ArrayList<>();
-        Set<String> terminals = new HashSet<>();
+        StringBuilder rawGrammarBuilder = new StringBuilder();
 
         System.out.println("=== CFG to PDA Converter ===");
         System.out.println("Enter your Context-Free Grammar rules.");
-        System.out.println("Format: S -> aSa | bSb | e  (Use 'e' for epsilon)");
+        System.out.println("Format: S -> aSa | bSb | e  (Use 'e' or '\u03B5' for epsilon)");
         System.out.println("Type 'DONE' when you are finished entering rules.\n");
 
         while (true) {
             System.out.print("Enter rule: ");
             String line = scanner.nextLine().trim();
-
-            if (line.equalsIgnoreCase("DONE")) {
-                break;
-            }
-
-            if (line.isEmpty()) {
-                continue;
-            }
-
-            if (line.contains("$")) {
-                System.out.println("  [!] Error: The '$' symbol is reserved for the internal PDA stack marker. Please do not use it in your grammar.");
-                continue;
-            }
-
-            String[] parts = line.split("->");
-            if (parts.length != 2) {
-                System.out.println("  [!] Invalid format. Please use '->' to separate left and right sides.");
-                continue;
-            }
-
-            String lhs = parts[0].trim();
-            String[] derivations = parts[1].split("\\|");
-
-            for (String derivation : derivations) {
-                String rhs = derivation.trim();
-                grammar.add(new Rule(lhs, rhs));
-
-                if (!rhs.equals("e")) {
-                    for (char c : rhs.toCharArray()) {
-                        if (!Character.isUpperCase(c) && !Character.isWhitespace(c)) {
-                            terminals.add(String.valueOf(c));
-                        }
-                    }
-                }
-            }
+            if (line.equalsIgnoreCase("DONE")) break;
+            rawGrammarBuilder.append(line).append("\n");
         }
 
-        if (grammar.isEmpty()) {
-            System.out.println("No grammar entered. Exiting...");
+        // Test the newly created GUI wrapper function
+        PipelineResult result = processGrammar(rawGrammarBuilder.toString());
+
+        System.out.println("\nChecking for Left Recursion...");
+        System.out.println(result.message);
+
+        if (result.grammar == null || result.grammar.isEmpty()) {
             scanner.close();
             return;
         }
 
-        // --- NEW: Intercept and Fix Left Recursion ---
-        System.out.println("\nChecking for Left Recursion...");
-        grammar = eliminateLeftRecursion(grammar);
-
-        System.out.println("Detected Terminals: " + terminals);
-
-        System.out.println("Converting CFG to PDA...");
-        List<Transition> pda = convertToPDA(grammar, terminals);
-        System.out.println("PDA successfully generated with " + pda.size() + " transitions.\n");
+        System.out.println("Detected Terminals: " + result.terminals);
+        System.out.println("PDA successfully generated with " + result.pda.size() + " transitions.\n");
 
         while (true) {
             System.out.print("Enter a string to test against the PDA (or type 'exit'): ");
@@ -232,13 +280,12 @@ public class CFGtoPDAPipeline {
 
             if (input.equalsIgnoreCase("exit")) break;
 
-            boolean isAccepted = testString(pda, input);
+            boolean isAccepted = testString(result.pda, input);
 
-            if (isAccepted) {
-                System.out.println("-> Result: ACCEPTED\n");
-            } else {
-                System.out.println("-> Result: REJECTED\n");
-            }
+            // Testing the new static message variable
+            System.out.println("-> Result: " + simulationMessage);
+            // Testing the new static stack exposure
+            System.out.println("-> Final Stack State: " + currentSimulationStack + "\n");
         }
         scanner.close();
     }

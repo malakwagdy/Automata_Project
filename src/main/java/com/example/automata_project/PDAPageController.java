@@ -66,11 +66,6 @@ public class PDAPageController {
         SceneController.switchScene(event, "MainPage.fxml", "Main Page");
     }
 
-    private String formatRemainingInput(String input, int consumedCount) {
-        String remaining = input.substring(consumedCount);
-        return remaining.isEmpty() ? "\u03B5" : remaining;
-    }
-
     private void runSimulation(String input) {
         simulationTimeline = new Timeline();
 
@@ -128,6 +123,11 @@ public class PDAPageController {
 
     private boolean shouldStopEarly(String message) {
         return !("String Rejected: more a's than b's".equals(message) || "String Accepted!".equals(message));
+    }
+
+    private String formatRemainingInput(String input, int consumedCount) {
+        String remaining = input.substring(consumedCount);
+        return remaining.isEmpty() ? "\u03B5" : remaining;
     }
 
     private String formatStackVertical(Stack<Character> stack) {

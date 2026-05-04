@@ -51,7 +51,6 @@ public class DFAPageController {
         stateCircleMap.put("TWO_ONES", TWO_ONES);
 
         resetStateColors();
-//        highlightState(START_STATE);
         inputLabel.setText("Input:  -");
         statusLabel.setText("");
     }
@@ -66,7 +65,6 @@ public class DFAPageController {
         if (input == null) {
             input = "";
         }
-        // highlightState("START");
         runSimulation(input);
     }
 
